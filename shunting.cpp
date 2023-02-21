@@ -1,18 +1,20 @@
 #include <iostream>
 #include <stdio.h>
-#include <set>
 // CPP program to evaluate a given
 // expression where tokens are
 // separated by space.
 #include <bits/stdc++.h>
+#include <stack>
 using namespace std;
 
 int precedence(char op) {
   if(op == '*' || op == '+' || op == '?') 
-  return 3;
+  return 4;
   if(op == '.')
-  return 2;
+  return 3;
   if(op == '^' || op == '$')
+  return 2;
+  if(op == '|')
   return 1;
   return 0;
 }
@@ -24,17 +26,14 @@ int main () {
   stack <char> ops;
 
   for(int i=0; regex[i] != '\0'; i++) {
-    if (!ops.empty()) {
-      
-      cout << ops.top() << "\n\n";
-    }
     if (regex[i] == '(') {
       ops.push(regex[i]);
     }
     else if (isalpha(regex[i])) {
       output.push(regex[i]);
       if (isalpha(regex[i+1])) {
-        ops.push('.');
+        regex[i] = '.';
+        i--;
       }
     }
     else if (regex[i] == ')') {
@@ -47,7 +46,8 @@ int main () {
         ops.pop();
       }
       if (isalpha(regex[i+1])) {
-        ops.push('.');
+        regex[i] = '.';
+        i--;
       }
     }
     else {
@@ -59,7 +59,8 @@ int main () {
       ops.push(regex[i]);
       if (regex[i] == '*' || regex[i] == '+' || regex[i] == '?') {
         if (isalpha(regex[i+1])) {
-          ops.push('.');
+          regex[i] = '.';
+          i--;
         }
       }
     }
