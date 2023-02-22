@@ -1,13 +1,8 @@
-#include <iostream>
-#include <stdio.h>
-// CPP program to evaluate a given
-// expression where tokens are
-// separated by space.
-#include <bits/stdc++.h>
-#include <stack>
-using namespace std;
+#include "Headers/Shunting.h"
 
-int precedence(char op) {
+Shunting::Shunting() = default;
+
+int Shunting::precedence(char op) {
   if(op == '*' || op == '+' || op == '?') 
   return 4;
   if(op == '.')
@@ -18,7 +13,7 @@ int precedence(char op) {
   return 1;
   return 0;
 }
-int main () {
+stack<char> Shunting::toPostfix (const string &initialExpression) {
   char regex[50];
   printf("Introducir expresion regular: ");
   scanf("%s", regex);
@@ -78,5 +73,5 @@ int main () {
     output.pop();
   }
 
-  return 0;
+  return output;
 }
