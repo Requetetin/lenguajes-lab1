@@ -15,7 +15,8 @@ int main(int argc, char **argv) {
   }
   cout << "Regex input: " << argv[1] << endl;
   Shunting shunting;
-  stack<char> output = shunting.toPostfix(argv[1]);
+  string output = shunting.toPostfix(argv[1]);
+  cout << output << endl;
   Transition trial(1, 2, 'a'); 
   trial.print();
 

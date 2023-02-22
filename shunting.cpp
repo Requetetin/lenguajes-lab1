@@ -13,20 +13,23 @@ int Shunting::precedence(char op) {
   return 1;
   return 0;
 }
-stack<char> Shunting::toPostfix (const string &initialExpression) {
-  char regex[50];
-  printf("Introducir expresion regular: ");
-  scanf("%s", regex);
-  stack <char> output;
+
+string Shunting::toPostfix (string regex) {
+  string output;
   stack <char> ops;
 
   for(int i=0; regex[i] != '\0'; i++) {
+    if (regex[i] == ' ') {
+      printf("Your expression contains a whitespace at %d, please remove to continue", i);
+      exit(-1);
+      continue;
+    }
     if (regex[i] == '(') {
       ops.push(regex[i]);
     }
-    else if (isalpha(regex[i])) {
-      output.push(regex[i]);
-      if (isalpha(regex[i+1])) {
+    else if (isalnum(regex[i])) {
+      output +=regex[i];
+      if (isalnum(regex[i+1]) || regex[i+1] == '(') {
         regex[i] = '.';
         i--;
       }
@@ -35,12 +38,12 @@ stack<char> Shunting::toPostfix (const string &initialExpression) {
       while(!ops.empty() && ops.top() != '(') {
         char op = ops.top();
         ops.pop();
-        output.push(op);
+        output += op;
       }
       if (!ops.empty()) {
         ops.pop();
       }
-      if (isalpha(regex[i+1])) {
+      if (isalnum(regex[i+1]) || regex[i+1] == '(') {
         regex[i] = '.';
         i--;
       }
@@ -49,11 +52,11 @@ stack<char> Shunting::toPostfix (const string &initialExpression) {
       while(!ops.empty() && precedence(ops.top()) >= precedence(regex[i])) {
         char op = ops.top();
         ops.pop();
-        output.push(op);
+        output += op;
       }
       ops.push(regex[i]);
       if (regex[i] == '*' || regex[i] == '+' || regex[i] == '?') {
-        if (isalpha(regex[i+1])) {
+        if (isalnum(regex[i+1]) || regex[i+1] == '(') {
           regex[i] = '.';
           i--;
         }
@@ -64,13 +67,7 @@ stack<char> Shunting::toPostfix (const string &initialExpression) {
   while(!ops.empty()) {
     char op = ops.top();
     ops.pop();
-    output.push(op);
-  }
-
-  while(!output.empty()) {
-    char topChar = output.top();
-    cout << topChar << '\n';
-    output.pop();
+    output += op;
   }
 
   return output;

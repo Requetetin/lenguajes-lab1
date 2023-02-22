@@ -8,7 +8,7 @@ class Shunting {
   public:
     Shunting();
 
-    stack<char> toPostfix (const string &initialExpression);
+    string toPostfix (string regex);
 
   private:
     int precedence(char);
