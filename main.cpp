@@ -5,6 +5,8 @@
 
 #include "Headers/Transition.h"
 #include "Headers/Shunting.h"
+#include "Headers/AFN.h"
+#include "Headers/Cleaner.h"
 
 using namespace std;
 
@@ -14,10 +16,13 @@ int main(int argc, char **argv) {
     exit(-1);
   }
   cout << "Regex input: " << argv[1] << endl;
+  Cleaner cleaner;
+  string cleanRegex = cleaner.cleanString(argv[1]);
+  cout << cleanRegex << endl;
   Shunting shunting;
-  string output = shunting.toPostfix(argv[1]);
+  string output = shunting.toPostfix(cleanRegex);
   cout << output << endl;
-  Transition trial(1, 2, 'a'); 
+  Transition trial(1, 2, '\0'); 
   trial.print();
 
   return 0;

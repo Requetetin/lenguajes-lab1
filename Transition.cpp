@@ -10,5 +10,5 @@ Transition::Transition(int src, int dest, char sym) {
 }
 
 void Transition::print() {
-  cout << "move(" << source << ", " << symbol << ") = " << destiny << "\n";
+  cout << "move(" << source << ", " << symbol << " (" << symbolEquivalent << ")" << ") = " << destiny << "\n";
 }

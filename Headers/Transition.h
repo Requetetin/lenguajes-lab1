@@ -2,6 +2,9 @@
 
 using namespace std;
 
+#ifndef TRANSITION_H
+#define TRANSITION_H
+
 class Transition {
   public:
     Transition();
@@ -24,3 +27,5 @@ class Transition {
     char symbol;
     int symbolEquivalent;
 };
+
+#endif

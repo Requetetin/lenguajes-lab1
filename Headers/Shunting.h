@@ -4,6 +4,9 @@
 
 using namespace std;
 
+#ifndef SHUNTING_H
+#define SHUNTING_H
+
 class Shunting {
   public:
     Shunting();
@@ -13,3 +16,5 @@ class Shunting {
   private:
     int precedence(char);
 };
+
+#endif
