@@ -5,6 +5,7 @@ Cleaner::Cleaner() = default;
 
 string Cleaner::cleanString(string regex) {
   regex = Cleaner::removeSpaces(regex);
+  regex = Cleaner::shortenUnary(regex);
   regex = Cleaner::replacePlus(regex);
   regex = Cleaner:: replaceQuestion(regex);
   return regex;
@@ -13,6 +14,22 @@ string Cleaner::cleanString(string regex) {
 string Cleaner::removeSpaces(string regex) {
   regex.erase(remove(regex.begin(), regex.end(), ' '), regex.end());
   return regex;
+}
+
+string Cleaner::shortenUnary(string regex) {
+  string finalRegex;
+  for (int i = 0; i < regex.length(); i++) {
+    if (regex[i] == '*' && regex[i-1] != '*') {
+      finalRegex.push_back(regex[i]);
+    } else if (regex[i] == '+' && regex[i-1] != '+') {
+      finalRegex.push_back(regex[i]);
+    } else if (regex[i] == '?' && regex[i-1] != '?') {
+      finalRegex.push_back(regex[i]);
+    } else if (isalnum(regex[i]) || regex[i] == '(' || regex[i] == ')') {
+      finalRegex.push_back(regex[i]);
+    }
+  }
+  return finalRegex;
 }
 
 string Cleaner::replacePlus(string regex) {

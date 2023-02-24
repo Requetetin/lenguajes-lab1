@@ -13,6 +13,7 @@ class Cleaner {
 
   private:
     string removeSpaces(string regex);
+    string shortenUnary(string regex);
     string replacePlus(string regex);
     string replaceQuestion(string regex);
 };
