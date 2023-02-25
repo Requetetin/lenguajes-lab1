@@ -93,3 +93,30 @@ AFN AFN::orAutomata(AFN &aut1, AFN &aut2) {
   return AFN(startState, allStates, acceptedStates, allTransitions);
 
 }
+
+AFN AFN::conccatenationAutomata(AFN &aut1, AFN &aut2) {
+  int startState = aut1.initial;
+  vector<int> acceptedStates = aut2.accepted;
+
+  vector<int> allStates;
+  for (int state: aut1.states) {
+    allStates.push_back(state);
+  }
+  for (int state: aut2.states) {
+    allStates.push_back(state);
+  }
+
+  vector<Transition> allTransitions;
+  for (Transition transition: aut1.transitions) {
+    allTransitions.push_back(transition);
+  }
+  for (Transition transition: aut2.transitions) {
+    allTransitions.push_back(transition);
+  }
+
+  for (int accept: aut1.accepted) {
+    allTransitions.push_back(Transition(accept, aut2.initial, 'e'));
+  }
+
+  return AFN(startState, allStates, acceptedStates, allTransitions);
+}
