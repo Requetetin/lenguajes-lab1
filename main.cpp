@@ -23,8 +23,15 @@ int main(int argc, char **argv) {
   string output = shunting.toPostfix(cleanRegex);
   cout << output << endl;
   AFN father;
-  AFN trial = father.symbolAutomata('a');
-  trial.print();
+  AFN trialA = father.symbolAutomata('a');
+  AFN trialB = father.symbolAutomata('b');
+  AFN trialAnd = father.conccatenationAutomata(trialA, trialB);
+  cout << "A" << endl;
+  trialA.print();
+  cout << "B" << endl;
+  trialB.print();
+  cout << "OR" << endl;
+  trialAnd.print();
 
   return 0;
 }
