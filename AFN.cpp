@@ -2,6 +2,8 @@
 
 AFN::AFN() = default;
 
+int AFN::maxState = 0;
+
 AFN::AFN(int initialState, vector<int> allStates, vector<int> acceptedStates, vector<Transition> allTransitions) {
   this->initial = initialState;
   this->states = allStates;
@@ -9,7 +11,7 @@ AFN::AFN(int initialState, vector<int> allStates, vector<int> acceptedStates, ve
   this->transitions = allTransitions;
   for (Transition &transition : transitions) {
     int transitionSymbol = transition.getSymbolEquiv();
-    if (find(this->symbols.begin(), this->symbols.end(), transitionSymbol) != symbols.end()) {
+    if (!count(symbols.begin(), symbols.end(), transitionSymbol)) {
       this->symbols.push_back(transition.getSymbol());
     }
   }
@@ -37,4 +39,18 @@ void AFN::printVectors(vector<int> &vector) {
   }
 
   cout << vector.back() <<  "}" << endl;
+}
+
+AFN AFN::symbolAutomata(char sym) {
+  int startState = AFN::nextState();
+  int endState = AFN::nextState();
+
+  vector<int> allStates = {startState, endState};
+
+  vector<int> acceptedStates = {endState};
+
+  Transition symbolTrans(startState, endState, sym);
+  vector<Transition> allTransitions = {symbolTrans};
+
+  return AFN(startState, allStates, acceptedStates, allTransitions);
 }

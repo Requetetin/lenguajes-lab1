@@ -14,12 +14,20 @@ class AFN {
 
     void print();
 
+    int nextState() {return maxState++;};
+
+    AFN symbolAutomata(char sym);
+    AFN conccatenationAutomata(AFN &aut1, AFN &aut2);
+    AFN orAutomata(AFN &aut1, AFN &aut2);
+    AFN kleeneAutomata(AFN &aut1);
+
   private:
     int initial;
     vector<int> states;
     vector<int> accepted;
     vector<int> symbols;
     vector<Transition> transitions;
+    static int maxState;
     void printVectors(vector<int> &vector);
 };
 

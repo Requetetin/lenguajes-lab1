@@ -22,7 +22,8 @@ int main(int argc, char **argv) {
   Shunting shunting;
   string output = shunting.toPostfix(cleanRegex);
   cout << output << endl;
-  Transition trial(1, 2, '\0'); 
+  AFN father;
+  AFN trial = father.symbolAutomata('a');
   trial.print();
 
   return 0;
