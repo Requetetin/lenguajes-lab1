@@ -25,13 +25,10 @@ int main(int argc, char **argv) {
   AFN father;
   AFN trialA = father.symbolAutomata('a');
   AFN trialB = father.symbolAutomata('b');
-  AFN trialAnd = father.conccatenationAutomata(trialA, trialB);
-  cout << "A" << endl;
-  trialA.print();
-  cout << "B" << endl;
-  trialB.print();
-  cout << "OR" << endl;
-  trialAnd.print();
+  AFN trialAnd = father.orAutomata(trialA, trialB);
+  AFN trialKleen = father.kleeneAutomata(trialAnd);
+  cout << "FULL" << endl;
+  trialKleen.print();
 
   return 0;
 }
