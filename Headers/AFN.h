@@ -14,12 +14,12 @@ class AFN {
 
     void print();
 
-    int nextState() {return maxState++;};
+    static int nextState() {return maxState++;};
 
-    AFN symbolAutomata(char sym);
-    AFN conccatenationAutomata(AFN &aut1, AFN &aut2);
-    AFN orAutomata(AFN &aut1, AFN &aut2);
-    AFN kleeneAutomata(AFN &aut1);
+    static AFN symbolAutomata(char sym);
+    static AFN conccatenationAutomata(AFN &aut1, AFN &aut2);
+    static AFN orAutomata(AFN &aut1, AFN &aut2);
+    static AFN kleeneAutomata(AFN &aut1);
 
   private:
     int initial;

@@ -18,17 +18,43 @@ int main(int argc, char **argv) {
   cout << "Regex input: " << argv[1] << endl;
   Cleaner cleaner;
   string cleanRegex = cleaner.cleanString(argv[1]);
-  cout << cleanRegex << endl;
+  cout << "CLEANED: " + cleanRegex << endl;
   Shunting shunting;
   string output = shunting.toPostfix(cleanRegex);
-  cout << output << endl;
-  AFN father;
-  AFN trialA = father.symbolAutomata('a');
-  AFN trialB = father.symbolAutomata('b');
-  AFN trialAnd = father.orAutomata(trialA, trialB);
-  AFN trialKleen = father.kleeneAutomata(trialAnd);
-  cout << "FULL" << endl;
-  trialKleen.print();
+  cout << "POSTFIX: " + output << endl;
+
+  stack<AFN> afnStack;
+
+  for (char exp : output) {
+    if (exp == '*') {
+      AFN automata = afnStack.top();
+      afnStack.pop();
+
+      afnStack.push(AFN::kleeneAutomata(automata));
+    } else if (exp == '|') {
+      AFN secondAutomata = afnStack.top();
+      afnStack.pop();
+
+      AFN firstAutomata = afnStack.top();
+      afnStack.pop();
+
+      afnStack.push(AFN::orAutomata(firstAutomata, secondAutomata));
+    } else if (exp == '.') {
+      AFN secondAutomata = afnStack.top();
+      afnStack.pop();
+
+      AFN firstAutomata = afnStack.top();
+      afnStack.pop();
+
+      afnStack.push(AFN::conccatenationAutomata(firstAutomata, secondAutomata));
+    } else {
+      afnStack.push(AFN::symbolAutomata(exp));
+    }
+  }
+
+  AFN finalAutomata = afnStack.top();
+  afnStack.pop();
+  finalAutomata.print();
 
   return 0;
 }
