@@ -33,7 +33,7 @@ string Cleaner::shortenUnary(string regex) {
 }
 
 string Cleaner::replacePlus(string regex) {
-  if (regex.find('+') != string::npos) {
+  while (regex.find('+') != string::npos) {
     int index = regex.find('+');
     if (regex.at(index - 1) != ')') {
       char operable = regex.at(index - 1);
@@ -59,7 +59,7 @@ string Cleaner::replacePlus(string regex) {
 }
 
 string Cleaner::replaceQuestion(string regex) {
-  if (regex.find('?') != string::npos) {
+  while (regex.find('?') != string::npos) {
     int index = regex.find('?');
     if (regex.at(index - 1) != ')') {
       char operable = regex.at(index - 1);
