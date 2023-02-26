@@ -14,6 +14,8 @@ class AFN {
 
     void print();
 
+    void printDotNotation();
+
     static int nextState() {return maxState++;};
 
     static AFN symbolAutomata(char sym);
@@ -25,10 +27,11 @@ class AFN {
     int initial;
     vector<int> states;
     vector<int> accepted;
-    vector<int> symbols;
+    vector<char> symbols;
     vector<Transition> transitions;
     static int maxState;
     void printVectors(vector<int> &vector);
+    void printVectors(vector<char> &vector);
 };
 
 #endif

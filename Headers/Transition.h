@@ -12,6 +12,7 @@ class Transition {
     Transition(int, int, char);
 
     void print();
+    void printDot();
 
     int getSource() { return source; }
 

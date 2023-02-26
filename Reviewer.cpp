@@ -21,7 +21,7 @@ void Reviewer::validOperations(string regex) {
         exit(-1);
       }
     } else if (regex[i] == '*') {
-      if (!isalnum(regex[i-1]) || regex[i-1] != ')') {
+      if (!isalnum(regex[i-1]) && regex[i-1] != ')') {
         cout << "ERROR! Invalid * operation at index: " << i << endl;
         exit(-1);
       }

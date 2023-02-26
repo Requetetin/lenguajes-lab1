@@ -18,16 +18,17 @@ AFN::AFN(int initialState, vector<int> allStates, vector<int> acceptedStates, ve
 }
 
 void AFN::print() {
-  cout << "Initial: " << initial << endl;
-  cout << "States: ";
+  cout << "initial_state=\"" << initial << "\"," << endl;
+  cout << "states=";
   printVectors(states);
-  cout << "Acceptance states: ";
+  cout << "final_states=";
   printVectors(accepted);
-  cout << "Transitions: " << endl;
+  cout << "transitions={" << endl;
   for (Transition &transition: transitions) {
     transition.print();
   }
-  cout << "Symbols: ";
+  cout << "}," << endl;
+  cout << "input_symbols=";
   printVectors(symbols);
 }
 
@@ -35,10 +36,20 @@ void AFN::printVectors(vector<int> &vector) {
   cout << "{";
 
   for (int i=0; i<vector.size() - 1; i++) {
-    cout << vector[i] << ", ";
+    cout << "\"" << vector[i] << "\", ";
   }
 
-  cout << vector.back() <<  "}" << endl;
+  cout << "\"" << vector.back() <<  "\"}," << endl;
+}
+
+void AFN::printVectors(vector<char> &vector) {
+  cout << "{";
+
+  for (int i=0; i<vector.size() - 1; i++) {
+    cout << "\"" << vector[i] << "\", ";
+  }
+
+  cout << "\"" << vector.back() <<  "\"}," << endl;
 }
 
 AFN AFN::symbolAutomata(char sym) {
@@ -145,4 +156,22 @@ AFN AFN::kleeneAutomata(AFN &aut1) {
   }
 
   return AFN(startState, allStates, acceptedStates, allTransitions);
+}
+
+void AFN::printDotNotation() {
+  cout << "digraph finite_state_machine {" << endl;
+	cout << "fontname=\"Helvetica,Arial,sans-serif\"" << endl;
+	cout << "node [fontname=\"Helvetica,Arial,sans-serif\"]" << endl;
+	cout << "edge [fontname=\"Helvetica,Arial,sans-serif\"]" << endl;
+	cout << "rankdir=LR;" << endl;
+	cout << "node [shape = doublecircle]; ";
+  cout << initial << " ";
+  for (int end: accepted) {
+    cout << " " << end << " ";
+  }
+	cout << ";" << endl <<"node [shape = circle];" << endl;
+	for (Transition &transition: transitions) {
+    transition.printDot();
+  }
+  cout << "}";
 }

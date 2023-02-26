@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
   AFN finalAutomata = afnStack.top();
   afnStack.pop();
   finalAutomata.print();
+  cout << "\n\nDOT NOTATION:\n";
+  finalAutomata.printDotNotation();
 
   return 0;
 }
