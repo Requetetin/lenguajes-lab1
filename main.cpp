@@ -7,6 +7,7 @@
 #include "Headers/Shunting.h"
 #include "Headers/AFN.h"
 #include "Headers/Cleaner.h"
+#include "Headers/Reviewer.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ int main(int argc, char **argv) {
   Cleaner cleaner;
   string cleanRegex = cleaner.cleanString(argv[1]);
   cout << "CLEANED: " + cleanRegex << endl;
+  Reviewer review(cleanRegex);
   Shunting shunting;
   string output = shunting.toPostfix(cleanRegex);
   cout << "POSTFIX: " + output << endl;

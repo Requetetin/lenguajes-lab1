@@ -35,6 +35,10 @@ string Cleaner::shortenUnary(string regex) {
 string Cleaner::replacePlus(string regex) {
   while (regex.find('+') != string::npos) {
     int index = regex.find('+');
+    if (index == 0) {
+      cout << "ERROR! Can't use operator + at the start" << endl;
+      exit(-1);
+    }
     if (regex.at(index - 1) != ')') {
       char operable = regex.at(index - 1);
       string replacement;
@@ -61,6 +65,10 @@ string Cleaner::replacePlus(string regex) {
 string Cleaner::replaceQuestion(string regex) {
   while (regex.find('?') != string::npos) {
     int index = regex.find('?');
+    if (index == 0) {
+      cout << "ERROR! Can't use operator ? at the start" << endl;
+      exit(-1);
+    }
     if (regex.at(index - 1) != ')') {
       char operable = regex.at(index - 1);
       string replacement;
