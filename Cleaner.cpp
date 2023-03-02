@@ -25,7 +25,7 @@ string Cleaner::shortenUnary(string regex) {
       finalRegex.push_back(regex[i]);
     } else if (regex[i] == '?' && regex[i-1] != '?') {
       finalRegex.push_back(regex[i]);
-    } else {
+    } else if (isalnum(regex[i]) || regex[i] == '(' || regex[i] == ')') {
       finalRegex.push_back(regex[i]);
     }
   }
