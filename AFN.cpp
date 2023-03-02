@@ -175,3 +175,13 @@ void AFN::printDotNotation() {
   }
   cout << "}";
 }
+
+set<int> eClosure(AFN &afn) {
+  set<int> a;
+  return a;
+}
+
+set<int> move(set<int> states, char symbol) {
+  set<int> a;
+  return a;
+} 

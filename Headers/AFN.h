@@ -1,4 +1,5 @@
 #include <vector>
+#include <set>
 #include <algorithm>
 #include "Transition.h"
 
@@ -22,6 +23,9 @@ class AFN {
     static AFN conccatenationAutomata(AFN &aut1, AFN &aut2);
     static AFN orAutomata(AFN &aut1, AFN &aut2);
     static AFN kleeneAutomata(AFN &aut1);
+
+    set<int> eClosure(AFN &afn);
+    set<int> move(set<int>, char);
 
   private:
     int initial;

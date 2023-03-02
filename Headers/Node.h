@@ -16,10 +16,10 @@ class Node {
     Node(char, bool, int);
 
     // Unary operators
-    Node(char, Node);
+    Node(char, Node*);
 
     // Double operators
-    Node(char, Node, Node);
+    Node(char, Node*, Node*);
 
     void setRoot() {isRoot=true;};
 
@@ -28,8 +28,8 @@ class Node {
     bool isRoot = false;
     bool isLeaf = false;
     int leafPosition = NULL;
-    static Node left;
-    static Node right;
+    static Node* left;
+    static Node* right;
 
     bool nullable;
     set<int> firstPos;

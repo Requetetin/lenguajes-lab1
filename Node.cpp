@@ -8,12 +8,12 @@ Node::Node(char value, bool isLeaf, int leafPosition) {
   this->leafPosition = leafPosition;
 }
 
-Node::Node(char value, Node left) {
+Node::Node(char value, Node* left) {
   this->value = value;
   this->left = left;
 }
 
-Node::Node(char value, Node left, Node right) {
+Node::Node(char value, Node* left, Node* right) {
   this->value = value;
   this->left = left;
   this->right = right;
