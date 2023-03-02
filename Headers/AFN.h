@@ -24,7 +24,8 @@ class AFN {
     static AFN orAutomata(AFN &aut1, AFN &aut2);
     static AFN kleeneAutomata(AFN &aut1);
 
-    set<int> eClosure(AFN &afn);
+    set<int> eClosure();
+    set<int> eClosure(set<int>);
     set<int> move(set<int>, char);
 
   private:
