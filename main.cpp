@@ -3,11 +3,12 @@
 #include <bits/stdc++.h>
 #include <stack>
 
-#include "Headers/Transition.h"
-#include "Headers/Shunting.h"
+#include "Headers/AFD.h"
 #include "Headers/AFN.h"
 #include "Headers/Cleaner.h"
 #include "Headers/Reviewer.h"
+#include "Headers/Shunting.h"
+#include "Headers/Transition.h"
 
 using namespace std;
 
@@ -60,12 +61,13 @@ int main(int argc, char **argv) {
   cout << "\n\nDOT NOTATION:\n";
   finalAutomata.printDotNotation();
 
-  bool accepted = finalAutomata.simulate();
-  if (accepted) {
-    cout << "\nTHE STRING IS VALID";
-  } else {
-    cout << "\nTHE STRING IS INVALID";
-  }
+  // if (finalAutomata.simulate()) {
+  //   cout << "\nTHE STRING IS VALID";
+  // } else {
+  //   cout << "\nTHE STRING IS INVALID";
+  // }
 
+  AFD translated = finalAutomata.toAFD();
+  translated.printDotNotation();
   return 0;
 }

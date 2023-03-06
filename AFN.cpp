@@ -11,7 +11,7 @@ AFN::AFN(int initialState, vector<int> allStates, vector<int> acceptedStates, ve
   this->transitions = allTransitions;
   for (Transition &transition : transitions) {
     int transitionSymbol = transition.getSymbolEquiv();
-    if (!count(symbols.begin(), symbols.end(), transitionSymbol)) {
+    if (!count(symbols.begin(), symbols.end(), transitionSymbol) && transition.getSymbol() != 'e') {
       this->symbols.push_back(transition.getSymbol());
     }
   }
@@ -228,4 +228,46 @@ bool AFN::simulate() {
   if (!intersect.empty())
     return true;
   return false;
+}
+
+AFD AFN::toAFD() {
+  vector<set<int>> Dstates;
+  vector<bool> DstatesMarks;
+  vector<Transition> Dtran;
+  Dstates.push_back(eClosure(getInitial()));
+  DstatesMarks.push_back(false);
+  bool ending = 0;
+  while (!ending) {
+    auto it = find(DstatesMarks.begin(), DstatesMarks.end(), false);
+    if (it != DstatesMarks.end()) {
+      int index = it - DstatesMarks.begin();
+      DstatesMarks.at(index) = true;
+
+      for (char sym: symbols) {
+        set<int> U = eClosure(move(Dstates.at(index), sym));
+        if (find(Dstates.begin(), Dstates.end(), U) == Dstates.end()) {
+          Dstates.push_back(U);
+          DstatesMarks.push_back(false);
+        }
+        int destinyIndex = find(Dstates.begin(), Dstates.end(), U) - Dstates.begin(); 
+        Dtran.push_back(Transition(index, destinyIndex, sym));
+      }
+    } else {
+      ending = 1;
+    }
+  }
+  vector<int> allStates;
+  for (int i=0; i<Dstates.size(); i++) {
+    allStates.push_back(i);
+  }
+  vector<int> acceptedStates;
+  for (int i=0; i<Dstates.size(); i++) {
+    for (int j=0; j<accepted.size(); j++) {
+      if (count(Dstates.at(i).begin(), Dstates.at(i).end(), accepted.at(j))) {
+        acceptedStates.push_back(i);
+        continue;
+      }
+    }
+  }
+  return AFD(0, allStates, acceptedStates, Dtran);
 }
