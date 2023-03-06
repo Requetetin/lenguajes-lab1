@@ -60,5 +60,17 @@ int main(int argc, char **argv) {
   cout << "\n\nDOT NOTATION:\n";
   finalAutomata.printDotNotation();
 
+  set<int> eClosureInitial = finalAutomata.eClosure(finalAutomata.getInitial());
+  cout << "\nECLOSURE INITIAL:\n";
+  for (auto& str : eClosureInitial) {
+      cout << str << ' ';
+  }
+
+  set<int> moveA = finalAutomata.move(eClosureInitial, 'a');
+  cout << "\nMOVE ECLOSURE INITIAL:\n";
+  for (auto& str : moveA) {
+      cout << str << ' ';
+  }
+
   return 0;
 }

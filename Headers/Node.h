@@ -16,10 +16,10 @@ class Node {
     Node(char, bool, int);
 
     // Unary operators
-    Node(char, Node*);
+    Node(char, Node);
 
     // Double operators
-    Node(char, Node*, Node*);
+    Node(char, Node, Node);
 
     void setRoot() {isRoot=true;};
 
@@ -27,9 +27,9 @@ class Node {
     char value;
     bool isRoot = false;
     bool isLeaf = false;
-    int leafPosition = NULL;
-    static Node* left;
-    static Node* right;
+    int leafPosition = -1;
+    static Node left;
+    static Node right;
 
     bool nullable;
     set<int> firstPos;
@@ -37,10 +37,10 @@ class Node {
     set<int> nextPos;
 
 
-    bool nullable();
-    set<int> firstPos();
-    set<int> lastPos();
-    set<int> nextPos();
+    bool calcNullable();
+    set<int> calcFirstPos();
+    set<int> calcLastPos();
+    set<int> calcNextPos();
 
 };
 

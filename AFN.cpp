@@ -176,17 +176,36 @@ void AFN::printDotNotation() {
   cout << "}";
 }
 
-set<int> AFN::eClosure() {
-  set<int> a;
-  return a;
+set<int> AFN::eClosure(int state) {
+  set<int> finalSet;
+  finalSet.insert(state);
+  for (Transition transition: transitions) {
+    if (transition.getSymbol() == 'e' && transition.getSource() == state) {
+      finalSet.insert(transition.getDestiny());
+      set<int> childSet = AFN::eClosure(transition.getDestiny());
+      finalSet.insert(childSet.begin(), childSet.end());
+    }
+  }
+  return finalSet;
 }
 
 set<int> AFN::eClosure(set<int> initials) {
-  set<int> a;
-  return a;
+  set<int> finalSet;
+  for (int state: initials) {
+    set<int> individualSet = AFN::eClosure(state);
+    finalSet.insert(individualSet.begin(), individualSet.end());
+  }
+  return finalSet;
 }
 
-set<int> AFN::move(set<int> states, char symbol) {
-  set<int> a;
-  return a;
+set<int> AFN::move(set<int> statesSet, char moveSymbol) {
+  set<int> finalMoveSet;
+  for (int currentState: statesSet) {
+    for (Transition transition: transitions) {
+      if (transition.getSymbol() == moveSymbol && transition.getSource() == currentState) {
+        finalMoveSet.insert(transition.getDestiny());
+      }
+    }
+  }
+  return finalMoveSet;
 } 

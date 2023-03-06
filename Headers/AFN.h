@@ -18,13 +18,14 @@ class AFN {
     void printDotNotation();
 
     static int nextState() {return maxState++;};
+    int getInitial() {return initial;};
 
     static AFN symbolAutomata(char sym);
     static AFN conccatenationAutomata(AFN &aut1, AFN &aut2);
     static AFN orAutomata(AFN &aut1, AFN &aut2);
     static AFN kleeneAutomata(AFN &aut1);
 
-    set<int> eClosure();
+    set<int> eClosure(int);
     set<int> eClosure(set<int>);
     set<int> move(set<int>, char);
 
