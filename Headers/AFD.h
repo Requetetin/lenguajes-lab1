@@ -22,9 +22,7 @@ class AFD {
     static int nextState() {return maxState++;};
     int getInitial() {return initial;};
 
-    set<int> eClosure(int);
-    set<int> eClosure(set<int>);
-    set<int> move(set<int>, char);
+    int move(int, char);
 
   private:
     int initial;

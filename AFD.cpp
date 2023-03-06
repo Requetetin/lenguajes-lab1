@@ -70,34 +70,30 @@ void AFD::printDotNotation() {
   cout << "}";
 }
 
-set<int> AFD::move(set<int> statesSet, char moveSymbol) {
-  set<int> finalMoveSet;
-  for (int currentState: statesSet) {
-    for (Transition transition: transitions) {
-      if (transition.getSymbol() == moveSymbol && transition.getSource() == currentState) {
-        finalMoveSet.insert(transition.getDestiny());
-      }
+int AFD::move(int start, char moveSymbol) {
+  int next = -1;
+  for (Transition transition: transitions) {
+    if (transition.getSymbol() == moveSymbol && transition.getSource() == start) {
+      next = transition.getDestiny();
     }
   }
-  return finalMoveSet;
+  return next;
 } 
 
-// bool AFD::simulate() {
-//   set<int> F;
-//   for (int accState: accepted) {
-//     F.insert(accState);
-//   }
-//   set<int> S = eClosure(getInitial());
-//   string testString;
-//   cout << "\nType the testing string\n";
-//   cin >> testString;
-//   cout << "Starting test for: " << testString << "\n";
-//   for (int i = 0; i < testString.length(); i++) {
-//     S = eClosure(move(S, testString[i]));
-//   }
-//   set<int> intersect;
-//   set_intersection(S.begin(), S.end(), F.begin(), F.end(), inserter(intersect, intersect.begin()));
-//   if (!intersect.empty())
-//     return true;
-//   return false;
-// }
+bool AFD::simulate() {
+  set<int> F;
+  for (int accState: accepted) {
+    F.insert(accState);
+  }
+  string testString;
+  cout << "\nType the testing string\n";
+  cin >> testString;
+  cout << "Starting test for: " << testString << "\n";
+  int s = initial;
+  for (int i = 0; i < testString.length(); i++) {
+    s = move(s, testString[i]);
+  }
+  if (F.count(s) != 0)
+    return true;
+  return false;
+}

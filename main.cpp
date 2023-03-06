@@ -69,5 +69,10 @@ int main(int argc, char **argv) {
 
   AFD translated = finalAutomata.toAFD();
   translated.printDotNotation();
+  if (translated.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
   return 0;
 }
