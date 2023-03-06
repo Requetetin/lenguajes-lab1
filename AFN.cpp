@@ -182,7 +182,7 @@ set<int> AFN::eClosure(int state) {
   for (Transition transition: transitions) {
     if (transition.getSymbol() == 'e' && transition.getSource() == state) {
       finalSet.insert(transition.getDestiny());
-      set<int> childSet = AFN::eClosure(transition.getDestiny());
+      set<int> childSet = eClosure(transition.getDestiny());
       finalSet.insert(childSet.begin(), childSet.end());
     }
   }
@@ -192,7 +192,7 @@ set<int> AFN::eClosure(int state) {
 set<int> AFN::eClosure(set<int> initials) {
   set<int> finalSet;
   for (int state: initials) {
-    set<int> individualSet = AFN::eClosure(state);
+    set<int> individualSet = eClosure(state);
     finalSet.insert(individualSet.begin(), individualSet.end());
   }
   return finalSet;
@@ -209,3 +209,23 @@ set<int> AFN::move(set<int> statesSet, char moveSymbol) {
   }
   return finalMoveSet;
 } 
+
+bool AFN::simulate() {
+  set<int> F;
+  for (int accState: accepted) {
+    F.insert(accState);
+  }
+  set<int> S = eClosure(getInitial());
+  string testString;
+  cout << "\nType the testing string\n";
+  cin >> testString;
+  cout << "Starting test for: " << testString << "\n";
+  for (int i = 0; i < testString.length(); i++) {
+    S = eClosure(move(S, testString[i]));
+  }
+  set<int> intersect;
+  set_intersection(S.begin(), S.end(), F.begin(), F.end(), inserter(intersect, intersect.begin()));
+  if (!intersect.empty())
+    return true;
+  return false;
+}

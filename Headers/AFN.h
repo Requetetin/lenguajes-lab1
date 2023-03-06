@@ -17,6 +17,8 @@ class AFN {
 
     void printDotNotation();
 
+    bool simulate();
+
     static int nextState() {return maxState++;};
     int getInitial() {return initial;};
 
