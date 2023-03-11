@@ -6,6 +6,7 @@
 #include "Headers/AFD.h"
 #include "Headers/AFN.h"
 #include "Headers/Cleaner.h"
+#include "Headers/Node.h"
 #include "Headers/Reviewer.h"
 #include "Headers/Shunting.h"
 #include "Headers/Transition.h"
@@ -69,10 +70,14 @@ int main(int argc, char **argv) {
 
   AFD translated = finalAutomata.toAFD();
   translated.printDotNotation();
-  if (translated.simulate()) {
-    cout << "\nTHE STRING IS VALID";
-  } else {
-    cout << "\nTHE STRING IS INVALID";
-  }
+  // if (translated.simulate()) {
+  //   cout << "\nTHE STRING IS VALID";
+  // } else {
+  //   cout << "\nTHE STRING IS INVALID";
+  // }
+
+  Node* root;
+  root = root->makeTree(output);
+  root->print(root);
   return 0;
 }

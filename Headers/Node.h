@@ -1,6 +1,7 @@
 #include <iostream>
-
+#include <string>
 #include <set>
+#include <stack>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ using namespace std;
 
 class Node {
   public:
+    Node* left;
+    Node* right;
     // Basic
     Node();
 
@@ -16,20 +19,24 @@ class Node {
     Node(char, bool, int);
 
     // Unary operators
-    Node(char, Node);
+    Node(char, Node*);
 
     // Double operators
-    Node(char, Node, Node);
+    Node(char, Node*, Node*);
 
     void setRoot() {isRoot=true;};
+
+    Node* makeTree(string);
+
+    void print(Node*);
+
+    char getValue() {return value;};
 
   private:
     char value;
     bool isRoot = false;
     bool isLeaf = false;
     int leafPosition = -1;
-    static Node left;
-    static Node right;
 
     bool nullable;
     set<int> firstPos;
