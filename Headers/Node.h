@@ -2,6 +2,8 @@
 #include <string>
 #include <set>
 #include <stack>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -32,6 +34,8 @@ class Node {
 
     char getValue() {return value;};
 
+    void computeFunctions(Node*);
+
   private:
     char value;
     bool isRoot = false;
@@ -43,11 +47,12 @@ class Node {
     set<int> lastPos;
     set<int> nextPos;
 
+    void printSet(set<int>);
 
-    bool calcNullable();
-    set<int> calcFirstPos();
-    set<int> calcLastPos();
-    set<int> calcNextPos();
+    bool calcNullable(Node*);
+    set<int> calcFirstPos(Node*);
+    set<int> calcLastPos(Node*);
+    set<int> calcNextPos(Node*);
 
 };
 

@@ -76,8 +76,13 @@ int main(int argc, char **argv) {
   //   cout << "\nTHE STRING IS INVALID";
   // }
 
+  string directOutput = output;
+  directOutput.push_back('#');
+  directOutput.push_back('.');
   Node* root;
-  root = root->makeTree(output);
+  root = root->makeTree(directOutput);
+  root->setRoot();
+  root->computeFunctions(root);
   root->print(root);
   return 0;
 }
