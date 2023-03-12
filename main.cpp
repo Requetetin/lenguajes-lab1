@@ -27,6 +27,9 @@ int main(int argc, char **argv) {
   string output = shunting.toPostfix(cleanRegex);
   cout << "POSTFIX: " + output << endl;
 
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+
   stack<AFN> afnStack;
 
   for (char exp : output) {
@@ -56,26 +59,45 @@ int main(int argc, char **argv) {
     }
   }
 
+  cout << "Automata no determinista: " << endl;
   AFN finalAutomata = afnStack.top();
   afnStack.pop();
-  finalAutomata.print();
   cout << "\n\nDOT NOTATION:\n";
   finalAutomata.printDotNotation();
 
-  // if (finalAutomata.simulate()) {
-  //   cout << "\nTHE STRING IS VALID";
-  // } else {
-  //   cout << "\nTHE STRING IS INVALID";
-  // }
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
 
+  cout << "Simulando Automata no determinista: " << endl;
+  if (finalAutomata.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
+
+  cout << "Automata no determinista a determinista: " << endl;
   AFD translated = finalAutomata.toAFD();
   translated.printDotNotation();
-  // if (translated.simulate()) {
-  //   cout << "\nTHE STRING IS VALID";
-  // } else {
-  //   cout << "\nTHE STRING IS INVALID";
-  // }
 
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+
+  cout << "Simulando Automata no determinista a determinista: " << endl;
+  if (translated.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
+
+  cout << "Automata determinista directo: " << endl;
   string directOutput = output;
   directOutput.push_back('#');
   directOutput.push_back('.');
@@ -88,6 +110,12 @@ int main(int argc, char **argv) {
   set<char> symbols = root->getSymbols();
 
   set<Node*> treeLeaves = root->getNodeLeaves(root);
+  int finalIndex;
+  for (Node* leaf: treeLeaves) {
+    if (leaf->getValue() == '#') {
+      finalIndex = leaf->getLeafPosition();
+    }
+  }
   vector<set<int>> Dstates;
   vector<bool> DstatesMarks;
   vector<Transition> Dtrans;
@@ -138,12 +166,22 @@ int main(int argc, char **argv) {
   }
   vector<int> acceptedStates;
   for (int i=0; i<Dstates.size(); i++) {
-    if (count(Dstates.at(i).begin(), Dstates.at(i).end(), '#')) {
+    if (count(Dstates.at(i).begin(), Dstates.at(i).end(), finalIndex)) {
       acceptedStates.push_back(i);
     }
   }
 
   AFD direct(0, allStates, acceptedStates, Dtrans);
   direct.printDotNotation();
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+
+  cout << "Simulando determinista directo: " << endl;
+  if (direct.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
   return 0;
 }
