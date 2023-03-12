@@ -11,11 +11,17 @@ string Cleaner::cleanString(string regex) {
   return regex;
 }
 
+/**
+ * Removes spaces from input string
+ */
 string Cleaner::removeSpaces(string regex) {
   regex.erase(remove(regex.begin(), regex.end(), ' '), regex.end());
   return regex;
 }
 
+/**
+ * Makes consecutive unary operators a single one
+ */
 string Cleaner::shortenUnary(string regex) {
   string finalRegex;
   for (int i = 0; i < regex.length(); i++) {
@@ -32,6 +38,12 @@ string Cleaner::shortenUnary(string regex) {
   return finalRegex;
 }
 
+/**
+ * Replaces:
+ *     a+
+ * With:
+ *     aa*
+ */
 string Cleaner::replacePlus(string regex) {
   while (regex.find('+') != string::npos) {
     int index = regex.find('+');
@@ -62,6 +74,12 @@ string Cleaner::replacePlus(string regex) {
   return regex;
 }
 
+/**
+ * Replaces:
+ *     a?
+ * With:
+ *     (a|e)
+ */
 string Cleaner::replaceQuestion(string regex) {
   while (regex.find('?') != string::npos) {
     int index = regex.find('?');

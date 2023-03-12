@@ -6,6 +6,9 @@ Reviewer::Reviewer(string regex) {
   validOperations(regex);
 }
 
+/**
+ * Checks there is the same amount of opening and closing parentheses.
+ */
 void Reviewer::balancedParentheses(string regex) {
   if (count(regex.begin(), regex.end(), '(') != count(regex.begin(), regex.end(), ')')) {
     cout << "ERROR! Parentheses not balanced, enter a valid input" << endl;
@@ -13,6 +16,9 @@ void Reviewer::balancedParentheses(string regex) {
   }
 }
 
+/**
+ * Checks operators have valid positions
+ */
 void Reviewer::validOperations(string regex) {
   for (int i=0; i<regex.size(); i++) {
     if (regex[i] == '|') {

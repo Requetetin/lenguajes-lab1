@@ -2,6 +2,9 @@
 
 Node::Node() = default;
 
+/**
+ * Constructor for a leaf node
+ */
 Node::Node(char value, bool isLeaf, int leafPosition) {
   this->value = value;
   this->isLeaf = isLeaf;
@@ -10,18 +13,28 @@ Node::Node(char value, bool isLeaf, int leafPosition) {
   this->right = NULL;
 }
 
+/**
+ * Constructor for unary nodes, single leaf child
+ */
 Node::Node(char value, Node* left) {
   this->value = value;
   this->left = left;
   this->right = NULL;
 }
 
+/**
+ * Constructor for operator nodes, both children
+ */
 Node::Node(char value, Node* left, Node* right) {
   this->value = value;
   this->left = left;
   this->right = right;
 }
 
+/**
+ * Builds a tree from a regex
+ * Returns root node
+ */
 Node* Node::makeTree(string regex) {
   cout << "\nString being converted to a tree: " << regex << endl;
   stack<Node*> nodeStack;
@@ -58,6 +71,9 @@ void Node::printSet(set<int> set) {
   cout << '}';
 }
 
+/**
+ * Sets each node its nullable value
+ */
 bool Node::calcNullable(Node* node) {
   if (node->value == 'e') {
     return true;
@@ -77,6 +93,9 @@ bool Node::calcNullable(Node* node) {
   return false;
 }
 
+/**
+ * Calcs each nodes firstPos
+ */
 set<int> Node::calcFirstPos(Node* node) {
   set<int> a;
   vector<int> temp;
@@ -109,6 +128,9 @@ set<int> Node::calcFirstPos(Node* node) {
   return a;
 }
 
+/**
+ * Calc lastPos for each node
+ */
 set<int> Node::calcLastPos(Node* node) {
   set<int> a;
   vector<int> temp;
@@ -141,6 +163,9 @@ set<int> Node::calcLastPos(Node* node) {
   return a;
 }
 
+/**
+ * Calcs follow pos
+ */
 void Node::calcNextPos(Node* node) {
   if (node->value == '*') {
     set<Node*> leaves = node->getNodeLeaves(node);
@@ -163,6 +188,9 @@ void Node::calcNextPos(Node* node) {
   }
 }
 
+/**
+ * Prints node information
+ */
 void Node::print(Node* node) {
   if (node == NULL) {
     return;
@@ -190,6 +218,9 @@ void Node::print(Node* node) {
   cout << endl;
 }
 
+/**
+ * Traverses the tree postorder, and sets necesary values
+ */
 void Node::computeFunctions(Node* node) {
   if (node == NULL)
     return;
@@ -203,6 +234,10 @@ void Node::computeFunctions(Node* node) {
   node->calcNextPos(node);
 }
 
+/**
+ * Receives a node, traverses it postorder
+ * and gets the leaves stemming from it
+ */
 set<Node*> Node::getNodeLeaves(Node* node) {
   set<Node*> nodeSet;
   // Add leaves
@@ -226,6 +261,10 @@ set<Node*> Node::getNodeLeaves(Node* node) {
 
 }
 
+/**
+ * Traverses the tree postorder
+ * Gets the symbols of the input language
+ */
 void Node::setSymbols(Node* node) {
   set<Node*> leaves = getNodeLeaves(node);
 
