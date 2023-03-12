@@ -183,5 +183,7 @@ int main(int argc, char **argv) {
   } else {
     cout << "\nTHE STRING IS INVALID";
   }
+
+  direct.minimize();
   return 0;
 }

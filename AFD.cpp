@@ -97,3 +97,18 @@ bool AFD::simulate() {
     return true;
   return false;
 }
+
+AFD AFD::minimize() {
+  // Step 1: P0 = {{accepting states}, {remaining states}}
+  vector<set<int>> P0;
+  set<int> allStates;
+  allStates.insert(states.begin(), states.end());
+  set<int> finalStates;
+  finalStates.insert(accepted.begin(), accepted.end());
+  P0.push_back(finalStates);
+  set<int> remainingStates;
+  set_difference(allStates.begin(), allStates.end(), finalStates.begin(), finalStates.end(), inserter(remainingStates, end(remainingStates)));
+  P0.push_back(remainingStates);
+
+
+}

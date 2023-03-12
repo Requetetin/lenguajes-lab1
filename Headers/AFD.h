@@ -24,6 +24,8 @@ class AFD {
 
     int move(int, char);
 
+    AFD minimize();
+
   private:
     int initial;
     vector<int> states;
