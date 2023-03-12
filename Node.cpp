@@ -118,32 +118,49 @@ set<int> Node::calcLastPos(Node* node) {
     a.insert(node->leafPosition);
     return a;
   } else if (node->value == '|') {
-    set<int> left = node->left->firstPos;
-    set<int> right = node->right->firstPos;
+    set<int> left = node->left->lastPos;
+    set<int> right = node->right->lastPos;
     set_union(left.begin(), left.end(), right.begin(), right.end(), back_inserter(temp));
     copy(temp.begin(), temp.end(), inserter(a, a.end()));
     return a;
   } else if (node->value == '.') {
     if (node->right->nullable) {
-      set<int> left = node->left->firstPos;
-      set<int> right = node->right->firstPos;
+      set<int> left = node->left->lastPos;
+      set<int> right = node->right->lastPos;
       set_union(left.begin(), left.end(), right.begin(), right.end(), back_inserter(temp));
       copy(temp.begin(), temp.end(), inserter(a, a.end()));
       return a;
     } else {
-      a = node->right->firstPos;
+      a = node->right->lastPos;
       return a;
     }
   } else if (node->value == '*') {
-    a = node->left->firstPos;
+    a = node->left->lastPos;
     return a;
   }
   return a;
 }
 
-set<int> Node::calcNextPos(Node* node) {
-  set<int> a;
-  return a;
+void Node::calcNextPos(Node* node) {
+  if (node->value == '*') {
+    set<Node*> leaves = node->getNodeLeaves(node);
+    for (int nodeId : node->lastPos) {
+      for (Node* leaf: leaves) {
+        if (leaf->leafPosition == nodeId) {
+          leaf->nextPos.insert(node->firstPos.begin(), node->firstPos.end());
+        }
+      }
+    }
+  } else if (node->value == '.') {
+    set<Node*> leaves = node->getNodeLeaves(node);
+    for (int nodeId: node->left->lastPos) {
+      for (Node* leaf: leaves) {
+        if (leaf->leafPosition == nodeId) {
+          leaf->nextPos.insert(node->right->firstPos.begin(), node->right->firstPos.end());
+        }
+      }
+    }
+  }
 }
 
 void Node::print(Node* node) {
@@ -155,13 +172,21 @@ void Node::print(Node* node) {
   print(node->right);
   cout << 
     node->value << "\n" <<
-    "Leaf: " << node->isLeaf << "\n" <<
+    "Leaf: " << node->isLeaf << "\n"; 
+  if (node->isLeaf) {
+    cout << "Leaf Id: " << node->leafPosition << "\n";
+  }
+  cout <<
     "Root: " << node->isRoot << "\n" <<
     "Nullable: " << node->nullable << "\n" <<
     "First Pos: ";
     printSet(node->firstPos);
     cout << "\nLast Pos: ";
     printSet(node->lastPos);
+    if (node->isLeaf) {
+      cout << "\nFollow Pos: ";
+      printSet(node->nextPos);
+    }
   cout << endl;
 }
 
@@ -175,5 +200,28 @@ void Node::computeFunctions(Node* node) {
   node->nullable = node->calcNullable(node);
   node->firstPos = node->calcFirstPos(node);
   node->lastPos = node->calcLastPos(node);
-  node->nextPos = node->calcNextPos(node);
+  node->calcNextPos(node);
+}
+
+set<Node*> Node::getNodeLeaves(Node* node) {
+  set<Node*> nodeSet;
+  // Add leaves
+  if (node->left != NULL && node->left->isLeaf) {
+    nodeSet.insert(node->left);
+  }
+  if (node->right != NULL && node->right->isLeaf) {
+    nodeSet.insert(node->right);
+  }
+
+  // If not leaves, go through them
+  if (node->left != NULL && !node->left->isLeaf) {
+    set<Node*> temp = getNodeLeaves(node->left);
+    nodeSet.insert(temp.begin(), temp.end());
+  }
+  if (node->right != NULL && !node->right->isLeaf) {
+    set<Node*> temp = getNodeLeaves(node->right);
+    nodeSet.insert(temp.begin(), temp.end());
+  }
+  return nodeSet;
+
 }

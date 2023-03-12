@@ -36,6 +36,8 @@ class Node {
 
     void computeFunctions(Node*);
 
+    set<Node*> getNodeLeaves(Node*);
+
   private:
     char value;
     bool isRoot = false;
@@ -52,7 +54,7 @@ class Node {
     bool calcNullable(Node*);
     set<int> calcFirstPos(Node*);
     set<int> calcLastPos(Node*);
-    set<int> calcNextPos(Node*);
+    void calcNextPos(Node*);
 
 };
 
