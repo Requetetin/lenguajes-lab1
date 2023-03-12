@@ -38,6 +38,17 @@ class Node {
 
     set<Node*> getNodeLeaves(Node*);
 
+    int getLeafPosition() {return leafPosition;};
+
+    bool getNullable() {return nullable;};
+    set<int> getFirstPos() {return firstPos;};
+    set<int> getLastPos() {return lastPos;};
+    set<int> getNextPos() {return nextPos;};
+
+    set<char> getSymbols() {return symbols;};
+
+    void setSymbols(Node*);
+
   private:
     char value;
     bool isRoot = false;
@@ -55,6 +66,8 @@ class Node {
     set<int> calcFirstPos(Node*);
     set<int> calcLastPos(Node*);
     void calcNextPos(Node*);
+
+    set<char> symbols;
 
 };
 

@@ -225,3 +225,12 @@ set<Node*> Node::getNodeLeaves(Node* node) {
   return nodeSet;
 
 }
+
+void Node::setSymbols(Node* node) {
+  set<Node*> leaves = getNodeLeaves(node);
+
+  for (Node* leaf : leaves) {
+    if (leaf->value != '#' && leaf->value != 'e')
+      symbols.insert(leaf->value);
+  }
+}
