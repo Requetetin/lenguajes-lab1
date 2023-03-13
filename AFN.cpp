@@ -165,11 +165,11 @@ void AFN::printDotNotation() {
 	cout << "edge [fontname=\"Helvetica,Arial,sans-serif\"]" << endl;
 	cout << "rankdir=LR;" << endl;
 	cout << "node [shape = doublecircle]; ";
-  cout << initial << " ";
   for (int end: accepted) {
     cout << " " << end << " ";
   }
 	cout << ";" << endl <<"node [shape = circle];" << endl;
+  cout << initial << " [color=green];\n";
 	for (Transition &transition: transitions) {
     transition.printDot();
   }

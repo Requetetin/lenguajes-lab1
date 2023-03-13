@@ -35,6 +35,10 @@ class AFD {
     static int maxState;
     void printVectors(vector<int> &vector);
     void printVectors(vector<char> &vector);
+
+    bool isDistinguishable(vector<set<int>>, int, int);
+    Transition getTransition(int, char);
+    int indexOfSetWith(vector<set<int>>, int);
 };
 
 #endif

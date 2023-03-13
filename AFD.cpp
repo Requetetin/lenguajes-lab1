@@ -59,11 +59,11 @@ void AFD::printDotNotation() {
 	cout << "edge [fontname=\"Helvetica,Arial,sans-serif\"]" << endl;
 	cout << "rankdir=LR;" << endl;
 	cout << "node [shape = doublecircle]; ";
-  cout << initial << " ";
   for (int end: accepted) {
     cout << " " << end << " ";
   }
 	cout << ";" << endl <<"node [shape = circle];" << endl;
+  cout << initial << " [color=green];\n";
 	for (Transition &transition: transitions) {
     transition.printDot();
   }
@@ -98,17 +98,139 @@ bool AFD::simulate() {
   return false;
 }
 
+Transition AFD::getTransition(int initial, char sym) {
+  for (Transition trans: transitions) {
+    if (trans.getSource() == initial && trans.getSymbol() == sym) {
+      return trans;
+    }
+  }
+}
+
+bool AFD::isDistinguishable(vector<set<int>> PNew, int a, int b) {
+  bool distinguishable = false;
+  for (char sym: symbols) {
+    Transition transA = getTransition(a, sym);
+    Transition transB = getTransition(b, sym);
+    if (transA.getDestiny() != transB.getDestiny()) {
+      int subA, subB;
+      for (int i=0; i<PNew.size(); i++) {
+        if (PNew.at(i).count(transA.getDestiny())) {
+          subA = i;
+        }
+        if (PNew.at(i).count(transB.getDestiny())) {
+          subB = i;
+        }
+      }
+      if (subA != subB) {
+        distinguishable = true;
+      }
+    }
+  }
+  return distinguishable;
+}
+
+int AFD::indexOfSetWith(vector<set<int>> vc, int a) {
+  for(int i=0; i<vc.size(); i++) {
+    if (vc.at(i).count(a)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 AFD AFD::minimize() {
   // Step 1: P0 = {{accepting states}, {remaining states}}
-  vector<set<int>> P0;
+  vector<set<int>> POld;
   set<int> allStates;
   allStates.insert(states.begin(), states.end());
   set<int> finalStates;
   finalStates.insert(accepted.begin(), accepted.end());
-  P0.push_back(finalStates);
+  POld.push_back(finalStates);
   set<int> remainingStates;
   set_difference(allStates.begin(), allStates.end(), finalStates.begin(), finalStates.end(), inserter(remainingStates, end(remainingStates)));
-  P0.push_back(remainingStates);
+  POld.push_back(remainingStates);
+
+  vector<set<int>> PNew = POld;
+  // cout << "Initial Partition: "<<endl;
+  // for (set<int> localSet: PNew) {
+  //   cout << "NEW SET: \n";
+  //   for (int localState: localSet) {
+  //     cout << localState << endl;
+  //   }
+  // }
+  bool ending = false;
+  vector<set<int>> partitioned;
+  while (!ending) {
+    // Step 2: Calculate P1
+    
+    partitioned.clear();
+    for (set<int> subSet: PNew) {
+      vector<int> vc(subSet.begin(), subSet.end());
+      if (vc.size() > 1) {
+        for(int i=0; i<vc.size(); i++) {
+          for(int j=i+1; j<vc.size(); j++) {
+            if (isDistinguishable(PNew, vc.at(i), vc.at(j))) {
+              if (indexOfSetWith(partitioned, vc.at(i)) == -1 && indexOfSetWith(partitioned, vc.at(j)) == -1) {
+                partitioned.push_back(set<int> {vc.at(i)});
+                partitioned.push_back(set<int> {vc.at(j)});
+              } else if (indexOfSetWith(partitioned, vc.at(i)) == -1) {
+                partitioned.push_back(set<int> {vc.at(i)});
+              } else if (indexOfSetWith(partitioned, vc.at(j)) == -1) {
+                partitioned.push_back(set<int> {vc.at(j)});
+              }
+            } else {
+              if (indexOfSetWith(partitioned, vc.at(i)) == -1 && indexOfSetWith(partitioned, vc.at(j)) == -1) {
+                partitioned.push_back(set<int> {vc.at(i), vc.at(j)});
+              } else if (indexOfSetWith(partitioned, vc.at(i)) == -1) {
+                partitioned.at(indexOfSetWith(partitioned, vc.at(j))).insert(indexOfSetWith(partitioned, vc.at(i)));
+              } else if (indexOfSetWith(partitioned, vc.at(j)) == -1) {
+                partitioned.at(indexOfSetWith(partitioned, vc.at(i))).insert(indexOfSetWith(partitioned, vc.at(j)));
+              }
+            }
+          }
+        }
+      } else {
+        partitioned.push_back(subSet);
+        continue;
+      }
+    }
+    // cout << "Next Partition: "<<endl;
+    // for (set<int> localSet: partitioned) {
+    //   cout << "NEW SET: \n";
+    //   for (int localState: localSet) {
+    //     cout << localState << endl;
+    //   }
+    // }
+
+    if (PNew == partitioned) {
+      ending = true;
+    } else {
+      PNew = partitioned;
+    }
+  }
+
+  vector<int> aStates;
+  for (int i=0; i<PNew.size(); i++) {
+    aStates.push_back(i);
+  }
+
+  vector<int> acceptanceStates;
+  for (int i=0; i<PNew.size(); i++) {
+    set<int> intersect;
+    set_intersection(PNew.at(i).begin(), PNew.at(i).end(), finalStates.begin(), finalStates.end(), inserter(intersect, intersect.begin()));
+    if (!intersect.empty())
+      acceptanceStates.push_back(i);
+  }
+
+  vector<Transition> transitions;
+  for (int i=0; i<PNew.size(); i++) {
+    vector<int> localVc(PNew.at(i).begin(), PNew.at(i).end());
+    for (char sym: symbols) {
+      int destiny = indexOfSetWith(PNew, getTransition(localVc.at(0), sym).getDestiny());
+      transitions.push_back(Transition(i, destiny, sym));
+    }
+  }
 
 
+  return AFD(0, aStates, acceptanceStates, transitions);
 }
