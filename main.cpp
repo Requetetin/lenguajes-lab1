@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  cout << "Automata no determinista: " << endl;
+  cout << "\n\nAutomata no determinista: " << endl;
   AFN finalAutomata = afnStack.top();
   afnStack.pop();
   cout << "\n\nDOT NOTATION:\n";
@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
   // cout << "\nPRESS ENTER TO CONTINUE...";
   // cin.get();
 
-  cout << "Simulando Automata no determinista: " << endl;
+  cout << "\n\nSimulando Automata no determinista: " << endl;
   if (finalAutomata.simulate()) {
     cout << "\nTHE STRING IS VALID";
   } else {
@@ -79,14 +79,14 @@ int main(int argc, char **argv) {
   // cin.get();
   // cin.get();
 
-  cout << "Automata no determinista a determinista: " << endl;
+  cout << "\n\nAutomata no determinista a determinista: " << endl;
   AFD translated = finalAutomata.toAFD();
   translated.printDotNotation();
 
   // cout << "\nPRESS ENTER TO CONTINUE...";
   // cin.get();
 
-  cout << "Simulando Automata no determinista a determinista: " << endl;
+  cout << "\n\nSimulando Automata no determinista a determinista: " << endl;
   if (translated.simulate()) {
     cout << "\nTHE STRING IS VALID";
   } else {
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
   // cin.get();
   // cin.get();
 
-  cout << "Automata determinista directo: " << endl;
+  cout << "\n\nAutomata determinista directo: " << endl;
   string directOutput = output;
   directOutput.push_back('#');
   directOutput.push_back('.');
@@ -105,7 +105,6 @@ int main(int argc, char **argv) {
   root = root->makeTree(directOutput);
   root->setRoot();
   root->computeFunctions(root);
-  root->print(root);
   root->setSymbols(root);
   set<char> symbols = root->getSymbols();
 
@@ -184,8 +183,9 @@ int main(int argc, char **argv) {
     cout << "\nTHE STRING IS INVALID";
   }
 
-  direct.minimize();
-  direct.printDotNotation();
+  cout << "\n\nAutomata determinista minimizado: " << endl;
+  AFD minimized = direct.minimize();
+  minimized.printDotNotation();
   cout << "\nEND\n";
   return 0;
 }
