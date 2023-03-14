@@ -138,6 +138,36 @@ int AFD::indexOfSetWith(vector<set<int>> vc, int a) {
   return -1;
 }
 
+AFD AFD::removeDeadStates() {
+  // For every non acceptance state
+  vector<int> deadStates;
+  for (int state: states) {
+    if (!count(accepted.begin(), accepted.end(), state)) {
+      set<int> destinies;
+      for (char sym: symbols) {
+        destinies.insert(getTransition(state, sym).getDestiny());
+      }
+      if (destinies.size() == 1 && *destinies.begin() == state) {
+        deadStates.push_back(state);
+      }
+    }
+  }
+
+  vector<Transition> newTransitions;
+  if (deadStates.size() != 0) {
+    for (int deadState: deadStates) {
+      remove(states.begin(), states.end(), deadState);
+      for (Transition trans: transitions) {
+        if (trans.getSource() != deadState && trans.getDestiny() != deadState) {
+          newTransitions.push_back(trans);
+        }
+      }
+    }
+    return AFD(initial, states, accepted, newTransitions);
+  }
+  return AFD(initial, states, accepted, transitions);
+}
+
 AFD AFD::minimize() {
   // Step 1: P0 = {{accepting states}, {remaining states}}
   vector<set<int>> POld;

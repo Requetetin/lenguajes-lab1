@@ -26,6 +26,8 @@ class AFD {
 
     AFD minimize();
 
+    AFD removeDeadStates();
+
   private:
     int initial;
     vector<int> states;

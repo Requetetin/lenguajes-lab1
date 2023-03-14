@@ -176,6 +176,7 @@ int main(int argc, char **argv) {
   cout << "\nPRESS ENTER TO CONTINUE...";
   cin.get();
 
+
   cout << "Simulando determinista directo: " << endl;
   if (direct.simulate()) {
     cout << "\nTHE STRING IS VALID";
@@ -183,8 +184,19 @@ int main(int argc, char **argv) {
     cout << "\nTHE STRING IS INVALID";
   }
 
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
+
+  cout << "Removing dead states" << endl;
+  AFD cleaned = direct.removeDeadStates();
+  cleaned.printDotNotation();
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+
   cout << "\n\nAutomata determinista minimizado: " << endl;
-  AFD minimized = direct.minimize();
+  AFD minimized = cleaned.minimize();
   minimized.printDotNotation();
   cout << "\nEND\n";
   return 0;
