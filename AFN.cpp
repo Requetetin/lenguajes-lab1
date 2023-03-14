@@ -176,23 +176,24 @@ void AFN::printDotNotation() {
   cout << "}";
 }
 
-set<int> AFN::eClosure(int state) {
-  set<int> finalSet;
-  finalSet.insert(state);
+set<int> AFN::eClosure(int state, set<int> currentClosure) {
+  currentClosure.insert(state);
   for (Transition transition: transitions) {
     if (transition.getSymbol() == 'e' && transition.getSource() == state) {
-      finalSet.insert(transition.getDestiny());
-      set<int> childSet = eClosure(transition.getDestiny());
-      finalSet.insert(childSet.begin(), childSet.end());
+      if (find(currentClosure.begin(), currentClosure.end(), transition.getDestiny()) == currentClosure.end()) {
+        currentClosure.insert(transition.getDestiny());
+        set<int> childSet = eClosure(transition.getDestiny(), currentClosure);
+        currentClosure.insert(childSet.begin(), childSet.end());
+      }
     }
   }
-  return finalSet;
+  return currentClosure;
 }
 
 set<int> AFN::eClosure(set<int> initials) {
   set<int> finalSet;
   for (int state: initials) {
-    set<int> individualSet = eClosure(state);
+    set<int> individualSet = eClosure(state, set<int>());
     finalSet.insert(individualSet.begin(), individualSet.end());
   }
   return finalSet;
@@ -215,7 +216,7 @@ bool AFN::simulate() {
   for (int accState: accepted) {
     F.insert(accState);
   }
-  set<int> S = eClosure(getInitial());
+  set<int> S = eClosure(getInitial(), set<int>());
   string testString;
   cout << "\nType the testing string\n";
   cin >> testString;
@@ -234,7 +235,7 @@ AFD AFN::toAFD() {
   vector<set<int>> Dstates;
   vector<bool> DstatesMarks;
   vector<Transition> Dtran;
-  Dstates.push_back(eClosure(getInitial()));
+  Dstates.push_back(eClosure(getInitial(), set<int>()));
   DstatesMarks.push_back(false);
   bool ending = 0;
   while (!ending) {
