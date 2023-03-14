@@ -104,6 +104,7 @@ Transition AFD::getTransition(int initial, char sym) {
       return trans;
     }
   }
+  return Transition(-1, -1, 'e');
 }
 
 bool AFD::isDistinguishable(vector<set<int>> PNew, int a, int b) {
@@ -246,6 +247,14 @@ AFD AFD::minimize() {
     }
   }
 
+  // cout << "Final Partition: "<<endl;
+  // for (set<int> localSet: PNew) {
+  //   cout << "NEW SET: \n";
+  //   for (int localState: localSet) {
+  //     cout << localState << endl;
+  //   }
+  // }
+
   vector<int> aStates;
   for (int i=0; i<PNew.size(); i++) {
     aStates.push_back(i);
@@ -259,12 +268,14 @@ AFD AFD::minimize() {
       acceptanceStates.push_back(i);
   }
 
-  vector<Transition> transitions;
+  vector<Transition> newTransitions;
   for (int i=0; i<PNew.size(); i++) {
     vector<int> localVc(PNew.at(i).begin(), PNew.at(i).end());
     for (char sym: symbols) {
-      int destiny = indexOfSetWith(PNew, getTransition(localVc.at(0), sym).getDestiny());
-      transitions.push_back(Transition(i, destiny, sym));
+      if (getTransition(localVc.at(0), sym).getDestiny() != -1) {
+        int destiny = indexOfSetWith(PNew, getTransition(localVc.at(0), sym).getDestiny());
+        newTransitions.push_back(Transition(i, destiny, sym));
+      }
     }
   }
 
@@ -277,5 +288,5 @@ AFD AFD::minimize() {
   }
 
 
-  return AFD(initialState, aStates, acceptanceStates, transitions);
+  return AFD(initialState, aStates, acceptanceStates, newTransitions);
 }

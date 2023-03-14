@@ -195,9 +195,36 @@ int main(int argc, char **argv) {
   cout << "\nPRESS ENTER TO CONTINUE...";
   cin.get();
 
+  cout << "Simulando determinista directo sin estados muertos: " << endl;
+  if (cleaned.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
+
   cout << "\n\nAutomata determinista minimizado: " << endl;
   AFD minimized = cleaned.minimize();
   minimized.printDotNotation();
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+
+  cout << "Simulando minimizado: " << endl;
+  if (minimized.simulate()) {
+    cout << "\nTHE STRING IS VALID";
+  } else {
+    cout << "\nTHE STRING IS INVALID";
+  }
+
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
+
+
   cout << "\nEND\n";
   return 0;
 }
