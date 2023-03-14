@@ -27,8 +27,8 @@ int main(int argc, char **argv) {
   string output = shunting.toPostfix(cleanRegex);
   cout << "POSTFIX: " + output << endl;
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
 
   stack<AFN> afnStack;
 
@@ -65,8 +65,8 @@ int main(int argc, char **argv) {
   cout << "\n\nDOT NOTATION:\n";
   finalAutomata.printDotNotation();
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
 
   cout << "\n\nSimulando Automata no determinista: " << endl;
   if (finalAutomata.simulate()) {
@@ -75,16 +75,16 @@ int main(int argc, char **argv) {
     cout << "\nTHE STRING IS INVALID";
   }
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
 
   cout << "\n\nAutomata no determinista a determinista: " << endl;
   AFD translated = finalAutomata.toAFD();
   translated.printDotNotation();
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
 
   cout << "\n\nSimulando Automata no determinista a determinista: " << endl;
   if (translated.simulate()) {
@@ -93,9 +93,9 @@ int main(int argc, char **argv) {
     cout << "\nTHE STRING IS INVALID";
   }
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
+  cin.get();
 
   cout << "\n\nAutomata determinista directo: " << endl;
   string directOutput = output;
@@ -173,8 +173,8 @@ int main(int argc, char **argv) {
   AFD direct(0, allStates, acceptedStates, Dtrans);
   direct.printDotNotation();
 
-  // cout << "\nPRESS ENTER TO CONTINUE...";
-  // cin.get();
+  cout << "\nPRESS ENTER TO CONTINUE...";
+  cin.get();
 
   cout << "Simulando determinista directo: " << endl;
   if (direct.simulate()) {

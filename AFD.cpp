@@ -170,6 +170,7 @@ AFD AFD::minimize() {
         for(int i=0; i<vc.size(); i++) {
           for(int j=i+1; j<vc.size(); j++) {
             if (isDistinguishable(PNew, vc.at(i), vc.at(j))) {
+              // cout << "DISTING" << vc.at(i) << ',' << vc.at(j) << endl;
               if (indexOfSetWith(partitioned, vc.at(i)) == -1 && indexOfSetWith(partitioned, vc.at(j)) == -1) {
                 partitioned.push_back(set<int> {vc.at(i)});
                 partitioned.push_back(set<int> {vc.at(j)});
@@ -179,12 +180,18 @@ AFD AFD::minimize() {
                 partitioned.push_back(set<int> {vc.at(j)});
               }
             } else {
+              // cout << "NONDISTING" << vc.at(i) << ',' << vc.at(j) << endl;
               if (indexOfSetWith(partitioned, vc.at(i)) == -1 && indexOfSetWith(partitioned, vc.at(j)) == -1) {
                 partitioned.push_back(set<int> {vc.at(i), vc.at(j)});
-              } else if (indexOfSetWith(partitioned, vc.at(i)) == -1) {
-                partitioned.at(indexOfSetWith(partitioned, vc.at(j))).insert(indexOfSetWith(partitioned, vc.at(i)));
-              } else if (indexOfSetWith(partitioned, vc.at(j)) == -1) {
-                partitioned.at(indexOfSetWith(partitioned, vc.at(i))).insert(indexOfSetWith(partitioned, vc.at(j)));
+              } else if (indexOfSetWith(partitioned, vc.at(i)) == -1 && indexOfSetWith(partitioned, vc.at(j)) != -1) {
+                partitioned.at(indexOfSetWith(partitioned, vc.at(j))).insert(vc.at(i));
+              } else if (indexOfSetWith(partitioned, vc.at(j)) == -1 && indexOfSetWith(partitioned, vc.at(i)) != -1) {
+                partitioned.at(indexOfSetWith(partitioned, vc.at(i))).insert(vc.at(j));
+              } else if (indexOfSetWith(partitioned, vc.at(j)) != -1 && indexOfSetWith(partitioned, vc.at(i)) != -1) {
+                if (indexOfSetWith(partitioned, vc.at(j)) != indexOfSetWith(partitioned, vc.at(i))) {
+                  partitioned.erase(partitioned.begin() + indexOfSetWith(partitioned, vc.at(j)));
+                  partitioned.at(indexOfSetWith(partitioned, vc.at(i))).insert(vc.at(j));
+                }
               }
             }
           }
@@ -231,6 +238,14 @@ AFD AFD::minimize() {
     }
   }
 
+  int initialState;
+  for (int i=0; i<PNew.size(); i++) {
+    set<int> stateSet = PNew.at(i);
+    if (stateSet.find(0) != stateSet.end()) {
+      initialState = i;
+    }
+  }
 
-  return AFD(0, aStates, acceptanceStates, transitions);
+
+  return AFD(initialState, aStates, acceptanceStates, transitions);
 }
